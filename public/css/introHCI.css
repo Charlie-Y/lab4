@@ -1,4 +1,8 @@
 /* applies to anything of class "example-class-selector" */
+
+body{
+     background: black;
+}
 .example-class-selector {
 	margin-top: 2em;
 }
@@ -12,6 +16,11 @@
 .jumbotron {
 	position: relative;
 	background: none;
+}
+
+img{
+     max-width: 250px;
+     max-height: 250px;
 }
 
 .jumbotron:after {
