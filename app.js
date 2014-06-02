@@ -8,12 +8,13 @@ var http = require('http');
 var path = require('path');
 var handlebars = require('express3-handlebars')
 var sass = require('node-sass');
-
+var twitterAPI = require('node-twitter-api');
 
 
 
 var index = require('./routes/index');
 var project = require('./routes/project');
+// var tweet = require('./routes/tweet');
 // Example route
 // var user = require('./routes/user');
 
@@ -53,6 +54,52 @@ app.get('/', index.view);
 app.get('/project/:name', project.viewProject);
 // Example route
 // app.get('/users', user.list);
+
+// Tweet from my twitter account. This is going to be fun...
+// Basically a setup rerouter for tweets
+
+
+
+
+var twitter = new twitterAPI({
+    consumerKey: 'QadTMIKyK9k0ByTpIAe4ZWA8L',
+    consumerSecret: 'FGFBeJofTjmM36g2WLKOf0ZxnK90sc3f3hhkO6ZrMUH2Tu9bOh',
+    // callback: 'http://yoururl.tld/something'
+
+});
+
+var twitter_data = {};
+var result_str = "Response: ";
+
+twitter_data.accessToken =  "2529590665-h5UxPLr7UzPvIjHlAwV3rfPpkFeFrGNytWmYz6l";
+twitter_data.accessTokenSecret = "Gz8qe5yqSyGc6NvzLBmtYrlO791p75ZN4GzdKIiNrfrq1";
+
+app.get('/tweet', function(req, res){
+// app.post('/tweet', function(req, res){
+    // res.send('hello world ' + req.query.s);
+    // var result_str = "Response: ";
+    var tweet_str = req.query.s;
+    var response_str = result_str;
+
+
+    twitter.statuses("update", {
+            status: tweet_str
+        },
+        twitter_data.accessToken,
+        twitter_data.accessTokenSecret,
+        function(error, data, response){
+            if (error){
+                response_str += " update error "
+            } else {
+                
+            }
+        }
+    );
+
+    res.send(result_str);
+});
+
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
